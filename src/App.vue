@@ -1,16 +1,44 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Loading</router-link>|
+      <router-link to="/questions">List</router-link>|
+      <router-link to="/share">Share</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
+<script>
+export default {
+  name: "app",
+  data: function() {
+    return {};
+  },
+  created: function() {
+    // Check if app is online on start
+    if (navigator.onLine) {
+      // Always start the app in the loading screen
+      // Push the loading screen onto the History
+      // When the loading is complete, the loading component will pop itself
+      this.$router.push("/loading");
+    } else {
+      // If offline, show no connecitity page
+      this.$router.push("/no-connectivity");
+    }
+
+    // Add event listener to react to going offline
+    window.addEventListener("offline", () => {
+      console.log("user offline");
+      this.$router.push("/no-connectivity");
+    });
+  }
+};
+</script>
+
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
