@@ -1,0 +1,47 @@
+@import "./variables.scss";
+
+body {
+  margin: 0;
+}
+
+#app {
+  position: relative;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  color: $col-text;
+  min-height: 100vh;
+  padding: 0;
+  background-color: $col-background;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+header {
+  width: 100%;
+  padding: 10px;
+
+  background-color: $col-primary;
+  display: flex;
+  align-items: center;
+
+  > span {
+    font-size: 1.3em;
+    color: $col-text-inverse;
+    margin-left: auto;
+  }
+}
+
+main {
+  padding: 0 10px;
+  margin: auto;
+  max-width: 600px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  background-color: $col-primary;
+  min-height: 5px;
+  width: 100%;
+}

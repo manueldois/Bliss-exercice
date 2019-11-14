@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "NoConnectivityPage",
+  name: "no-connectivity-page",
   created: function() {
     // Add event listener to react to going online
     window.addEventListener("online", () => {

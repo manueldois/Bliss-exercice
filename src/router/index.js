@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Loading from '../views/Loading'
-import List from '../views/List'
+import Questions from '../views/Questions'
 import Share from '../views/Share'
 import NoConnectivity from '../views/NoConnectivity'
 import store from '../store'
@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/',
     name: 'questions',
-    component: List
+    component: Questions
   },
   {
     path: '/share',
