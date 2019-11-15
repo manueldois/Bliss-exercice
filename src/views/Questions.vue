@@ -1,8 +1,6 @@
 <template>
   <div>
-    <header>
-      <span>Questions</span>
-    </header>
+    <Header title="Questions"></Header>
     <main>
       <search-box v-model="search_query"></search-box>
       <!-- If there's no search query, show all loaded questions and the load more scroll trigger -->
@@ -12,18 +10,19 @@
             <question-card v-bind:question="question"></question-card>
           </li>
         </ul>
-        <div id="scroll-trigger"></div>
       </template>
 
       <!-- If there is a search query, show just the filtered questions and the share button -->
       <template v-if="search_query">
-        <button id="btn-share" class="outline lg">Share results</button>
+        <button @click="share" id="btn-share" class="outline lg">Share results</button>
         <ul>
           <li v-for="question in filtered_questions" v-bind:key="question.key">
             <question-card v-bind:question="question"></question-card>
           </li>
         </ul>
       </template>
+
+      <div id="scroll-trigger"></div>
     </main>
     <footer></footer>
   </div>
@@ -32,13 +31,17 @@
 <script>
 import SearchBox from "../components/SearchBox";
 import QuestionCard from "../components/QuestionCard";
-import ApiService from '../Api'
+import Header from "../components/Header";
+
+import ApiService from "../Api";
+import { async } from "q";
 
 export default {
   name: "questions-page",
   components: {
     SearchBox,
-    QuestionCard
+    QuestionCard,
+    Header
   },
   data: function() {
     return {
@@ -47,39 +50,55 @@ export default {
       search_query: ""
     };
   },
-  beforeCreate: function(){
-  },
   watch: {
     search_query: async function(query) {
-      const new_questions = await ApiService.fetchQuestions(10, 0, null);
+      await this.loadFilteredQuestions(query);
+    }
+  },
+  methods: {
+    loadMoreQuestions: async function() {
+      console.log("Loading more questions");
+      const offset = this.all_questions.length + 10;
+      const new_questions = await ApiService.fetchQuestions(10, offset, null);
+      for (let question of new_questions) {
+        // Assign a key to each question loaded since id's overlap
+        question.key = this.all_questions.length + 1;
+        // Push the new questions onto existing ones
+        this.all_questions.push(question);
+      }
+    },
+    loadFilteredQuestions: async function(query) {
+      const new_questions = await ApiService.fetchQuestions(10, 0, query);
 
       // Erase stored filtered questions
       this.filtered_questions = [];
 
       for (let question of new_questions) {
-        // Assign a key to each question equal to its id (overlapped ids wont happen)
-        question.key = question.id;
+        question.key = Math.random();
         // Push the new questions onto existing ones
         this.filtered_questions.push(question);
       }
+    },
+    share: function() {
+      const content_url = this.$router.currentRoute.fullPath;
+      const type = "list";
+      this.$router.push({ path: "/share", query: { content_url, type } });
     }
+  },
+  beforeMount: function() {
+    const question_filter = this.$router.currentRoute.query["question_filter"];
+    if (question_filter) this.search_query = question_filter;
   },
   mounted: function() {
     // Enable loading more questions on scroll
     const scroll_trigger_observer = new IntersectionObserver(async entries => {
-      // If the trigger is in view
-      if (entries[0].isIntersecting) {
-        const new_questions = await ApiService.fetchQuestions(10, 0, null);
-        for (let question of new_questions) {
-          // Assign a key to each question loaded since id's overlap
-          question.key = this.all_questions.length + 1;
-          // Push the new questions onto existing ones
-          this.all_questions.push(question);
-        }
+      // If the trigger is in view, and we are not on query mode
+      if (entries[0].isIntersecting && !this.search_query) {
+        this.loadMoreQuestions();
       }
     });
     scroll_trigger_observer.observe(document.getElementById("scroll-trigger"));
-  },
+  }
 };
 </script>
 
@@ -92,9 +111,7 @@ main {
     > li {
       margin: 2px 0;
       list-style-type: none;
-      > question-card {
-        width: 100%;
-      }
+      border-bottom: 1px solid gray;
     }
   }
 

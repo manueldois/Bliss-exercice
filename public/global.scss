@@ -17,25 +17,12 @@ body {
   }
 }
 
-header {
-  width: 100%;
-  padding: 10px;
-
-  background-color: $col-primary;
-  display: flex;
-  align-items: center;
-
-  > span {
-    font-size: 1.3em;
-    color: $col-text-inverse;
-    margin-left: auto;
-  }
-}
-
 main {
   // padding: 0 10px;
   margin: auto;
   max-width: 600px;
+  background-color: white;
+  min-height: calc(100vh - 44px);
 }
 
 footer {
@@ -50,14 +37,19 @@ button {
   background: $col-primary;
   border: none;
   color: $col-text-inverse;
+  cursor: pointer;
   border-radius: 2px;
-  text-transform: capitalize;
   padding: 5px 8px;
   font-weight: bold;
 
   &.lg {
     padding: 10px 20px;
     font-size: 1.1em;
+  }
+
+  &.block {
+    width: 100%;
+    border-radius: 0;
   }
 
   &.outline {

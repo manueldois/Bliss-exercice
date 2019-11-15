@@ -11,6 +11,37 @@ class ApiService {
             })
     }
 
+    fetchQuestion(id) {
+        return fetch(
+            `https://private-anon-d1ec5b723b-blissrecruitmentapi.apiary-mock.com/questions/${id}`
+        )
+            .then(res => {
+                if (!res.ok) {
+                    throw res.error();
+                }
+                return res.json();
+            })
+    }
+
+    putQuestion(question) {
+        return fetch(`https://private-anon-d1ec5b723b-blissrecruitmentapi.apiary-mock.com/questions/${question.id}`, {
+            method: "PUT",
+            body: JSON.stringify(question)
+        }).then(res => {
+            console.log(res)
+            return res
+        })
+    }
+
+    shareUrl(destination_email, content_url) {
+        return fetch(`https://private-anon-d1ec5b723b-blissrecruitmentapi.apiary-mock.com/share?destination_email=${destination_email}&content_url=${content_url}`, {
+            method: "POST"
+        }).then(res => {
+            console.log(res)
+            return res
+        })
+    }
+
     checkHealth() {
         return Promise.race([
             fetch(

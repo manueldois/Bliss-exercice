@@ -22,12 +22,14 @@ const routes = [
   {
     path: '/questions/:id',
     name: 'question',
-    component: Question
+    component: Question,
+    props: true
   },
   {
     path: '/share',
     name: 'share',
-    component: Share
+    component: Share,
+    props: (route) => ({ content_url: route.query.content_url, type: route.query.type })
   },
   {
     path: '/loading',
