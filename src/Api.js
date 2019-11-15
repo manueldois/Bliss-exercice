@@ -49,7 +49,7 @@ class ApiService {
             ),
             new Promise((_, reject) => setTimeout(() => reject("timeout"), 10000)) // fetch timeout
         ])
-            // .then(res => new Promise((resolve, _) => setTimeout(() => resolve(res), 1000))) // Wait at least 1000 so you can see the loading page
+            .then(res => new Promise((resolve, _) => setTimeout(() => resolve(res), 1000))) // Wait at least 1000 so you can see the loading page
             .then(res => res.json())
             .then(body => body['status'] === "OK")
     }

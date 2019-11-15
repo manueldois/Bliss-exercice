@@ -1,19 +1,26 @@
 <template>
   <div>
-    <h1>Loading page</h1>
-    <div v-if="fetching">
-      <span>Contacting server...</span>
-    </div>
-    <div v-if="error">
-      <b>{{error}}</b>
-    </div>
+    <main>
+      <br> <br>
+      <h1>Loading</h1>
+      <template v-if="fetching">
+        <h2>Contacting server...</h2>
+        <Spinner></Spinner>
+      </template>
+
+      <b v-if="error">{{error}}</b>
+    </main>
   </div>
 </template>
 
 <script>
-import ApiService from '../Api'
+import ApiService from "../Api";
+import Spinner from "../components/Spinner";
 export default {
   name: "loading-page",
+  components: {
+    Spinner
+  },
 
   data: function() {
     return {
@@ -23,7 +30,7 @@ export default {
   },
 
   created: function() {
-      ApiService.checkHealth()
+    ApiService.checkHealth()
       .then(isHealthy => {
         if (isHealthy) {
           this.$router.go(-1); // Go back to whereever we were
@@ -46,7 +53,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
-b {
-  color: red;
+@import "@/../public/variables.scss";
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: $col-text-inverse;
+  background-color: lighten($col-primary, 10%);
+  height: 100vh;
+  b {
+    color: red;
+    font-size: 1.1em;
+  }
+
+  div.loader {
+    --color1: $col-text-inverse;
+    --color2: #{lighten($col-primary, 10%)};
+  }
 }
 </style>
