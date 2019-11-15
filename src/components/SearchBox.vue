@@ -66,7 +66,7 @@ label {
   position: relative;
   width: 100%;
   background-color: white;
-  border-radius: 4px;
+  // border-radius: 4px;
   box-shadow: $shadow-sm;
   padding: 10px 10px;
   border: none;
@@ -80,7 +80,8 @@ label {
     border: none;
     background: none;
     flex: 1 1 100%;
-    &:focus {
+    
+    &:not(:placeholder-shown) {
       & ~ button[name="back"] {
         display: block;
       }
@@ -89,7 +90,7 @@ label {
 
   > button[name="back"] {
     order: 1;
-    display: block;
+    display: none;
     border: none;
     background: none;
     padding: 0;

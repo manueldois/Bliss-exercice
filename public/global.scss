@@ -33,7 +33,7 @@ header {
 }
 
 main {
-  padding: 0 10px;
+  // padding: 0 10px;
   margin: auto;
   max-width: 600px;
 }
@@ -44,4 +44,33 @@ footer {
   background-color: $col-primary;
   min-height: 5px;
   width: 100%;
+}
+
+button {
+  background: $col-primary;
+  border: none;
+  color: $col-text-inverse;
+  border-radius: 2px;
+  text-transform: capitalize;
+  padding: 5px 8px;
+  font-weight: bold;
+
+  &.lg {
+    padding: 10px 20px;
+    font-size: 1.1em;
+  }
+
+  &.outline {
+    background: none;
+    border: solid 2px $col-primary;
+    color: $col-primary;
+  }
+
+  &:hover {
+    filter: brightness(60%);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }

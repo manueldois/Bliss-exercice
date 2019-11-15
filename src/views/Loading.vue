@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import store from "../store";
+import ApiService from '../Api'
 export default {
   name: "loading-page",
 
@@ -23,17 +23,10 @@ export default {
   },
 
   created: function() {
-    Promise.race([
-      fetch(
-        "https://private-anon-8c60d0d41b-blissrecruitmentapi.apiary-mock.com/health"
-      ),
-      new Promise((_, reject) => setTimeout(() => reject("timeout"), 10000)) // fetch timeout
-    ])
-      // .then(res => new Promise((resolve, _) => setTimeout(() => resolve(res), 1000))) // Wait at least 1000 so you can see the loading page
-      .then(res => res.json())
-      .then(body => {
-        if (body.status === "OK") {
-          this.$router.go(-1);
+      ApiService.checkHealth()
+      .then(isHealthy => {
+        if (isHealthy) {
+          this.$router.go(-1); // Go back to whereever we were
         } else {
           this.fetching = false;
           this.error = "Server is down, try again later";

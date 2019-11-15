@@ -2,9 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Loading from '../views/Loading'
 import Questions from '../views/Questions'
+import Question from '../views/Question'
 import Share from '../views/Share'
 import NoConnectivity from '../views/NoConnectivity'
-import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -12,8 +12,17 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    redirect: '/questions'
+  },
+  {
+    path: '/questions',
     name: 'questions',
     component: Questions
+  },
+  {
+    path: '/questions/:id',
+    name: 'question',
+    component: Question
   },
   {
     path: '/share',
